@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="/">Kumar's eCommerce</a>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        
+      </li>
+
+    </ul>
+
+
+<ul class="nav navbar-nav navbar-right">
+        <li><a href="shopping-cart">
+          <i class="fa fa-shopping-cart"></i> Shopping Cart</a></li>
+          <span class="badge badge-pill badge-dark">{{session.cart.totalQty}}</span>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+           aria-haspopup="true" aria-expanded="false"><a href="#"><i class="fas fa-user"></i> User Management<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            {{# if login}}
+              <li><a href="/user/profile">User Account</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="user/logout">Logout</a></li>
+            {{ else }}
+              <li><a href="/user/signup">Sign Up</a></li>
+              <li><a href="/user/signin">Sign In</a></li>
+            {{/ if}}
+          </ul>
+        </li>
+      </ul>
+  </div>
+</nav>

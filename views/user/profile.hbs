@@ -1,0 +1,38 @@
+       <h1>User Profile</h1>
+<div class="row">
+    <div class="col-md-6 col-md-offset-2">
+        <h2>My Addresses</h2>
+        <a href="../address" type="button" class="btn btn-success">Add new Address</a>
+        {{# each addresses }}
+        <hr>
+        <address>{{this.address1}}</address>
+        <address>{{this.city}} {{this.state}}</address>
+        <address>{{this.country}} {{this.zip}}</address>
+        <address>{{this.mobile}}</address>
+        <div class="row">
+                <a href="../deleteAddress/{{this._id}}" type="button" class="btn btn-success pull-right">Delete Address</a>
+        </div>
+        {{/each}}
+        </div>
+        <div class="col-md-6 col-md-offset-2">
+        <h2>My Orders</h2>
+        <hr>
+        {{# each orders }}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {{# each this.items }}
+                            <li class="list-group-item">
+                                <span class="badge">{{ this.price }}</span>
+                                {{ this.item.title }} | {{ this.qty }} Units
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <strong>Total Price: ${{ this.cart.totalPrice }}</strong>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>

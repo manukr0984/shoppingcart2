@@ -1,0 +1,25 @@
+.navbar-nav > li{
+    padding-left:30px;
+    padding-right:30px;
+  }
+
+.thumbnail{
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 1px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.thumbnail img{
+  max-height: 100px
+}
+
+.thumbnail .description{
+  color: #7f7f7f;
+}
+
+.price{
+  font-weight: bold;
+  font-size: 16px;
+}
