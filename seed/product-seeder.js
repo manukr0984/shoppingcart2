@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://localhost:27017/shopping');
+mongoose.connect('mongodb://manukr0984:Handball9!@ds243728.mlab.com:43728/manukr0984shopping');
 
 
 var products = [
