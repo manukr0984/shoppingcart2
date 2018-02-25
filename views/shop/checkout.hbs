@@ -1,35 +1,37 @@
 <div class="row">
     <div class="col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3">
-        <h1>Checkout</h1>
-        <h4>Your Total: ${{total}}</h4>
-        <div id="charge-error" class="alert alert-danger {{#if noError}}hidden{{/if}}">
-            {{errMsg}}
-        </div>      
+        <h1>Checkout</h1>     
         <hr>           
         <form action="/checkout" method="post" id="checkout-form">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="form-group">
-                        <label>Shipping Address:</label>
-                        <select name="addresses" id="addresses"> 
+                        <label>Shipping Address:</label> <a href="../address">Add new Address</a>
+                        <select class="selectpicker" name="addresses" id="addresses"> 
                             {{# each addresses }}   
                             <option value="{{this._id}}">{{this.address1}} {{this.city}} {{this.state}}
                                 {{this.country}} {{this.zip}}
                             </option> 
                             {{/each}}      
                         </select>
+                        
                 </div></div>
+                <hr>
                 <div class="col-xs-12">
                     <div class="form-group">
-                        <label>Payment Method:</label>
-                        <select name="payment" id="payment"> 
+                        <label>Payment Method:</label> <a href="../payment">Add new payment Method</a>
+                        <select class="selectpicker" name="payment" id="payment"> 
                             {{# each payments }}   
                             <option value="{{this._id}}">Card# {{this.cardNumber}}
                             </option> 
                             {{/each}}      
                         </select>    
                         </div></div>
+                       
             </div>
+             <hr>
+        <h4>Your Total: ${{total}}</h4>
+ 
             <button type="submit" class="btn btn-success">Buy now</button>
         </form>
     </div>
