@@ -4,6 +4,7 @@ var Cart = require('../models/cart');
 var Product = require('../models/product');
 var Order = require('../models/order');
 var Address = require('../models/address');
+var Payment = require('../models/payment');
 
 
 
@@ -81,9 +82,17 @@ router.get('/checkout', isLoggedIn, function(req, res, next) {
     if (!req.session.cart) {
         return res.redirect('/shopping-cart');
     }
+    var payments = new Payment();
+    var addresses = new Address();
     var cart = new Cart(req.session.cart);
     var errMsg = req.flash('error')[0];
-    res.render('shop/checkout', {total: cart.totalPrice, errMsg: errMsg, noError: !errMsg});
+    Payment.find({user: req.user}, function(err, docs){
+        payments = docs;console.log(payments);
+    });
+    Address.find({user: req.user}, function(err, docs){
+		res.render('shop/checkout', {total: cart.totalPrice, addresses: docs, payments: payments, errMsg: errMsg, noError: !errMsg});
+    });
+        
 });
 
 router.post('/checkout', isLoggedIn, function(req, res, next) {
@@ -91,27 +100,12 @@ router.post('/checkout', isLoggedIn, function(req, res, next) {
         return res.redirect('/shopping-cart');
     }
     var cart = new Cart(req.session.cart);
-    /*
-    var stripe = require("stripe")(
-        "sk_test_Sv8TI9xAwRZ8rJwd4ELXKJ0h"
-    );
-
-    stripe.charges.create({
-        amount: cart.totalPrice * 100,
-        currency: "usd",
-        source: req.body.stripeToken, // obtained with Stripe.js
-        description: "Test Charge"
-    }, function(err, charge) {
-        if (err) {
-            req.flash('error', err.message);
-           
-        }*/
+    
         var order = new Order({
             user: req.user,
             cart: cart,
-            address: req.body.address,
-            name: req.body.name,
-            paymentId: 1
+            addresses: req.body.addresses,
+            payment: req.body.payment,
         });
         order.save(function(err, result) {
             req.flash('success', 'Successfully bought product!');
@@ -119,7 +113,7 @@ router.post('/checkout', isLoggedIn, function(req, res, next) {
             res.redirect('/');
         });
     }); 
-//});
+
 
 router.get('/address', isLoggedIn, function (req, res, next) {
     var messages = req.flash('error');
@@ -152,6 +146,37 @@ router.post('/address', isLoggedIn, function(req, res, next) {
             res.redirect('/user/profile');
          }); 
     });
+
+    router.get('/payment', isLoggedIn, function (req, res, next) {
+        var messages = req.flash('error');
+        res.render('shop/payment', {});
+    });
+    
+    router.post('/payment', isLoggedIn, function(req, res, next) {
+            var payment = new Payment({
+                user: req.user,
+                cardName: req.body.cardName,
+                cardNumber: req.body.cardNumber,
+                expMonth: req.body.expMonth,
+                expYear: req.body.expYear,
+                cvc: req.body.cvc
+            });
+            payment.save(function(err, result) {
+                
+                req.flash('success', 'Successfully added payment!');
+                res.redirect('/user/profile');
+            });
+        }); 
+
+        router.get('/deletePayment/:id', function(req, res, next) {
+            var paymentId = req.params.id;
+            var payment = new Payment({'_id': paymentId});
+            payment.remove((err, result) => {
+                if (err) return res.send(500, err);
+                req.flash('success', 'Successfully deleted payment!');
+                res.redirect('/user/profile');
+             }); 
+        });
 	
 
 module.exports = router;

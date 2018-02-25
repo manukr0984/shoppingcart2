@@ -7,11 +7,13 @@ var passport = require('passport');
 var Order = require('../models/order');
 var Cart = require('../models/cart');
 var Address = require('../models/address');
+var Payment = require('../models/payment');
 
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
 var addresses;
+var payments;
 
 router.get('/profile', isLoggedIn, function (req, res, next) {
 	Address.find({user: req.user}, function(err, docs){
@@ -19,6 +21,12 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
             return res.write('Error!');
 		}
 		addresses = docs;
+	});
+	Payment.find({user: req.user}, function(err, docs){
+		if (err) {
+            return res.write('Error!');
+		}
+		payments = docs;
 	});
     Order.find({user: req.user}, function(err, orders) {
         if (err) {
@@ -29,7 +37,7 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
             cart = new Cart(order.cart);
             order.items = cart.generateArray();
         });
-        res.render('user/profile', { orders: orders , addresses: addresses});
+        res.render('user/profile', { orders: orders , addresses: addresses, payments: payments});
     });
 });
 
