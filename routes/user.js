@@ -16,18 +16,12 @@ var addresses;
 var payments;
 
 router.get('/profile', isLoggedIn, function (req, res, next) {
-	Address.find({user: req.user}, function(err, docs){
-		if (err) {
-            return res.write('Error!');
-		}
-		addresses = docs;
-	});
-	Payment.find({user: req.user}, function(err, docs){
-		if (err) {
-            return res.write('Error!');
-		}
-		payments = docs;
-	});
+
+        res.render('user/profile');
+});
+
+router.get('/userOrders', isLoggedIn, function (req, res, next) {
+
     Order.find({user: req.user}, function(err, orders) {
         if (err) {
             return res.write('Error!');
@@ -37,8 +31,54 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
             cart = new Cart(order.cart);
             order.items = cart.generateArray();
         });
-        res.render('user/profile', { orders: orders , addresses: addresses, payments: payments});
+        res.render('user/userOrders', { orders: orders});
     });
+});
+
+router.get('/userAddresses', isLoggedIn, function (req, res, next) {
+	Address.find({user: req.user}, function(err, docs){
+		if (err) {
+            return res.write('Error!');
+		}
+		addresses = docs;
+
+        res.render('user/userAddresses', { addresses: addresses});
+    });
+});
+
+router.get('/userPaymentMethods', isLoggedIn, function (req, res, next) {
+	Payment.find({user: req.user}, function(err, docs){
+		if (err) {
+            return res.write('Error!');
+		}
+		payments = docs;
+
+        res.render('user/userPaymentMethods', { payments: payments});
+    });
+});
+
+
+
+router.get('/deleteAddress/:id', function(req, res, next) {
+	var addressId = req.params.id;
+	var address = new Address({'_id': addressId});
+	address.remove((err, result) => {
+		if (err) return res.send(500, err);
+		req.flash('success', 'Successfully deleted address!');
+		res.redirect('/user/userAddresses');
+	 }); 
+});
+
+
+
+router.get('/deletePayment/:id', function(req, res, next) {
+	var paymentId = req.params.id;
+	var payment = new Payment({'_id': paymentId});
+	payment.remove((err, result) => {
+		if (err) return res.send(500, err);
+		req.flash('success', 'Successfully deleted payment!');
+		res.redirect('/user/userPaymentMethods');
+	 }); 
 });
 
 

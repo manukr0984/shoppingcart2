@@ -133,19 +133,9 @@ router.post('/address', isLoggedIn, function(req, res, next) {
         address.save(function(err, result) {
             
             req.flash('success', 'Successfully added address!');
-            res.redirect('/user/profile');
+            res.redirect('/user/userAddresses');
         });
     }); 
-    
-    router.get('/deleteAddress/:id', function(req, res, next) {
-        var addressId = req.params.id;
-        var address = new Address({'_id': addressId});
-        address.remove((err, result) => {
-            if (err) return res.send(500, err);
-            req.flash('success', 'Successfully deleted address!');
-            res.redirect('/user/profile');
-         }); 
-    });
 
     router.get('/payment', isLoggedIn, function (req, res, next) {
         var messages = req.flash('error');
@@ -164,19 +154,9 @@ router.post('/address', isLoggedIn, function(req, res, next) {
             payment.save(function(err, result) {
                 
                 req.flash('success', 'Successfully added payment!');
-                res.redirect('/user/profile');
+                res.redirect('/user/userPaymentMethods');
             });
-        }); 
-
-        router.get('/deletePayment/:id', function(req, res, next) {
-            var paymentId = req.params.id;
-            var payment = new Payment({'_id': paymentId});
-            payment.remove((err, result) => {
-                if (err) return res.send(500, err);
-                req.flash('success', 'Successfully deleted payment!');
-                res.redirect('/user/profile');
-             }); 
-        });
+}); 
 	
 
 module.exports = router;

@@ -1,0 +1,17 @@
+    <div class="row">
+    <div class="col-md-6 col-md-offset-2">
+        <h2>User Addresses</h2>
+        <a href="../address">Add new Address</a>
+        {{# each addresses }}
+        <hr>
+        <address>{{this.address1}}</address>
+        <address>{{this.city}} {{this.state}}</address>
+        <address>{{this.country}} {{this.zip}}</address>
+        <address>{{this.mobile}}</address>
+        <div class="row">
+                <a href="./deleteAddress/{{this._id}}" type="button" class="btn btn-success pull-right">Delete Address</a>
+        </div>
+        {{/each}}
+        <hr>
+        </div>
+        </div>

@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-md-6 col-md-offset-2">
+        <h2>User Payment Methods</h2>
+        <a href="../payment">Add new payment Method</a>
+        {{# each payments }}
+        <hr>
+        Card Holder Name: <strong>{{this.cardName}} </strong><br>
+        Credit Card Number: <strong>{{this.cardNumber}} </strong><br>
+        Exp Month: <strong>{{this.expMonth}} </strong><br>
+        Exp Year: <strong>{{this.expYear}} </strong><br>
+        CVC: <strong>{{this.cvc}} </strong><br>
+        <div class="row">
+                <a href="./deletePayment/{{this._id}}" type="button" class="btn btn-success pull-right">Delete Payment</a>
+        </div>
+        {{/each}}
+        <hr>
+    </div>
+</div>
